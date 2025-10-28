@@ -1,0 +1,54 @@
+<div class="poll-detail-container">
+    @if (poll$ | async; as poll) {
+        <div class="poll-content">
+            <a routerLink="/" class="back-link">← Back to Polls</a>
+            <h1>{{ poll.question }}</h1>
+
+            @if (!hasVoted) {
+                <form class="voting-form" (ngSubmit)="submitVote(poll)">
+                    @for (option of poll.options; track option.id) {
+                        <div class="option-radio">
+                            <input 
+                                type="radio" 
+                                [id]="option.id" 
+                                name="pollOption" 
+                                [value]="option.id"
+                                [(ngModel)]="selectedOption">
+                            <label [for]="option.id">{{ option.text }}</label>
+                        </div>
+                    }
+                    <button 
+                        type="submit" 
+                        class="vote-button"
+                        [disabled]="!selectedOption">
+                        Vote
+                    </button>
+                </form>
+            } @else {
+                <div class="results-container">
+                    <h2>Results</h2>
+                    <div class="total-votes">Total votes: {{ getTotalVotes(poll) }}</div>
+                    @for (option of poll.options; track option.id) {
+                        <div class="result-bar">
+                            <div class="result-label">
+                                {{ option.text }}
+                                <span class="vote-count">({{ option.votes }} votes)</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div 
+                                    class="progress-fill"
+                                    [style.width.%]="calculatePercentage(option, poll)">
+                                </div>
+                            </div>
+                            <div class="percentage">
+                                {{ calculatePercentage(option, poll) | number:'1.0-1' }}%
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    } @else {
+        <div class="loading">Loading poll...</div>
+    }
+</div>
