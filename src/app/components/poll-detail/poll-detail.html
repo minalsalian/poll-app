@@ -1,54 +1,58 @@
-<div class="poll-detail-container">
+<div class="poll-detail-container container py-4">
     @if (poll$ | async; as poll) {
-        <div class="poll-content">
-            <a routerLink="/" class="back-link">← Back to Polls</a>
-            <h1>{{ poll.question }}</h1>
+        <div class="card poll-content">
+            <div class="card-body">
+                <a routerLink="/" class="back-link btn btn-link p-0 mb-3">← Back to Polls</a>
+                <h1 class="mb-4">{{ poll.question }}</h1>
 
-            @if (!hasVoted) {
-                <form class="voting-form" (ngSubmit)="submitVote(poll)">
-                    @for (option of poll.options; track option.id) {
-                        <div class="option-radio">
-                            <input 
-                                type="radio" 
-                                [id]="option.id" 
-                                name="pollOption" 
-                                [value]="option.id"
-                                [(ngModel)]="selectedOption">
-                            <label [for]="option.id">{{ option.text }}</label>
-                        </div>
-                    }
-                    <button 
-                        type="submit" 
-                        class="vote-button"
-                        [disabled]="!selectedOption">
-                        Vote
-                    </button>
-                </form>
-            } @else {
-                <div class="results-container">
-                    <h2>Results</h2>
-                    <div class="total-votes">Total votes: {{ getTotalVotes(poll) }}</div>
-                    @for (option of poll.options; track option.id) {
-                        <div class="result-bar">
-                            <div class="result-label">
-                                {{ option.text }}
-                                <span class="vote-count">({{ option.votes }} votes)</span>
+                @if (!hasVoted) {
+                    <form class="voting-form" (ngSubmit)="submitVote(poll)">
+                        @for (option of poll.options; track option.id) {
+                            <div class="form-check mb-2 option-radio">
+                                <input 
+                                    class="form-check-input"
+                                    type="radio" 
+                                    [id]="option.id" 
+                                    name="pollOption" 
+                                    [value]="option.id"
+                                    [(ngModel)]="selectedOption">
+                                <label class="form-check-label" [for]="option.id">{{ option.text }}</label>
                             </div>
-                            <div class="progress-bar">
-                                <div 
-                                    class="progress-fill"
-                                    [style.width.%]="calculatePercentage(option, poll)">
+                        }
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary vote-button mt-3"
+                            [disabled]="!selectedOption">
+                            Vote
+                        </button>
+                    </form>
+                } @else {
+                    <div class="results-container mt-2">
+                        <h2>Results</h2>
+                        <div class="total-votes mb-3">Total votes: {{ getTotalVotes(poll) }}</div>
+                        @for (option of poll.options; track option.id) {
+                            <div class="result-bar mb-3">
+                                <div class="result-label d-flex justify-content-between align-items-center mb-1">
+                                    <div>{{ option.text }}</div>
+                                    <div class="vote-count text-muted">({{ option.votes }} votes)</div>
+                                </div>
+                                <div class="progress" style="height:24px;">
+                                    <div 
+                                        class="progress-bar bg-primary"
+                                        role="progressbar"
+                                        [style.width.%]="calculatePercentage(option, poll)">
+                                    </div>
+                                </div>
+                                <div class="percentage text-end text-muted mt-1">
+                                    {{ calculatePercentage(option, poll) | number:'1.0-1' }}%
                                 </div>
                             </div>
-                            <div class="percentage">
-                                {{ calculatePercentage(option, poll) | number:'1.0-1' }}%
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
+                        }
+                    </div>
+                }
+            </div>
         </div>
     } @else {
-        <div class="loading">Loading poll...</div>
+        <div class="loading text-center">Loading poll...</div>
     }
 </div>

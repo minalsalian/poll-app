@@ -48,3 +48,24 @@ h1 {
     grid-column: 1 / -1;
     color: #666;
 }
+
+/* Ensure inputs inside flex input-groups can shrink without overflowing their button siblings */
+.input-group .form-control {
+    min-width: 0;
+}
+
+/* Small toast-like animation for create success */
+.custom-toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1080;
+    opacity: 0;
+    transform: translateY(-10px) scale(.98);
+    transition: opacity .22s ease, transform .22s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.custom-toast.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}

@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Minor global tweaks to harmonize with Bootstrap */
+body {
+	background-color: #f8f9fa;
+	color: #212529;
+}
+
+.app-container {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
